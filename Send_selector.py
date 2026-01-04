@@ -9,16 +9,15 @@ from Analyzing_HTTP import get_head_x, get_cookie_x
 
 class Send_QtWorker(QObject):
     # 为每个文本编辑器定义独立的信号
-    plainTextEdit_response = Signal(str)  # 对应第一个文本编辑器
-    plainTextEdit_response_header = Signal(str)  # 对应第二个文本编辑器
-    plainTextEdit_response_cookie = Signal(str)  # 对应第三个文本编辑器
+    plainTextEdit_response = Signal(str)  # 第一个文本编辑器
+    plainTextEdit_response_header = Signal(str)  # 第二个文本编辑器
+    plainTextEdit_response_cookie = Signal(str)  # 第三个文本编辑器
     status_bar = Signal(str)
     show_toast = Signal(str, str)  # (message, toast_type)
-    finished = Signal()  # 新增完成信号
+    finished = Signal()  # 完成信号
 
     def __init__(self, library, model, respond_type, url, data, header, cookie, proxies, element, allow_redirects):
         super().__init__()
-        # 通过构造函数保存参数
         self.response = None
 
         self.Times = None
@@ -38,9 +37,8 @@ class Send_QtWorker(QObject):
         self.element = element
         self.allow_redirects = allow_redirects
 
-    # 工作线程的主要执行函数
     def run(self):
-        self.TimingBegins = int(datetime.now().timestamp() * 1000)  # 获取毫秒级时间戳
+        self.TimingBegins = int(datetime.now().timestamp() * 1000)
         try:
             self.status_bar.emit(f"提示:       发送中, 请稍后...")
             self.response = select_send(self.library, self.model, self.url, self.data, self.header, self.cookie, self.proxies, self.element, self.allow_redirects)
@@ -59,7 +57,7 @@ class Send_QtWorker(QObject):
         except Exception as e:
             self.plainTextEdit_response.emit(f"请求异常:{str(e)}")
             self.show_toast.emit(f"请求异常:{type(e).__name__}", "error")
-        self.TimingEnds = int(datetime.now().timestamp() * 1000)  # 获取毫秒级时间戳
+        self.TimingEnds = int(datetime.now().timestamp() * 1000)
         self.Times = self.TimingEnds - self.TimingBegins
         self.local_time = datetime.fromtimestamp(self.TimingBegins / 1000)
         self.formatted_time = self.local_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -76,3 +74,4 @@ def select_send(library, model, url, data, header, cookie, proxies, element, all
     else:
         response = None
     return response
+
