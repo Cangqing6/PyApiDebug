@@ -9,16 +9,11 @@ def parse_fetch_block(js: str):
         return parse_http_block(js)
     result = {'method': '', 'url': m.group(1), 'headers': '', 'header': {}, 'cookies': '', 'cookie': {}, 'data': ''}
     obj_text = m.group(2)
-
-    # 将 JS 对象转为 JSON 字符串（处理单词 null、去掉尾逗号等）
-    # 简易但 robust 的 JSON 规范化
     cleaned = obj_text
     cleaned = cleaned.replace("\n", "")  # 保留 null
     cleaned = cleaned.replace("\r", "")  # 保留 null
     cleaned = re.sub(r",\s*}", "}", cleaned)   # 去除尾部逗号
     cleaned = re.sub(r",\s*]", "]", cleaned)
-    # 转成 JSON 前，需要确保 key 都是双引号
-    # 你的格式本身就是合法 JSON，这里可以直接 parse
     data = json.loads(cleaned)
     result['method'] = data.get("method", "GET")
     result['data'] = data.get("body")
@@ -147,7 +142,6 @@ def get_cookie_x(cookies):
 
 
 def decodeDataStr(string):
-    # 尝试解码验证
     try:
         return base64.b64decode(string)
     except:
@@ -155,3 +149,4 @@ def decodeDataStr(string):
             return bytes.fromhex(string)
         except:
             return -1
+
