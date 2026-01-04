@@ -160,12 +160,12 @@ class MainWindow(QMainWindow):
         self.status_bar = QStatusBar()
         self.setStatusBar(self.status_bar)
 
-        # 1. 最左边的永久部件
+        # 最左边的永久部件
         app_name_label = QLabel("API调试工具 ")
         app_name_label.setStyleSheet("font-weight: bold; color: #2c3e50;")
         self.status_bar.insertPermanentWidget(0, app_name_label)
 
-        # 2. 右侧的永久部件（标准方式）
+        # 右侧的永久部件（标准方式）
         self.time_label = QLabel()
         self.status_bar.addPermanentWidget(self.time_label)
 
@@ -187,7 +187,7 @@ class MainWindow(QMainWindow):
         self.search_dialog.raise_()  # 提到最前面
         self.search_dialog.Dialog.lineEdit_FindTarget.setFocus()
 
-    #  土司弹窗
+    # 弹窗
     def show_toast(self, message, toast_type="info"):
         """显示Toast通知
         参数:
@@ -240,7 +240,7 @@ class MainWindow(QMainWindow):
     #  创建系统托盘图标
     def init_tray(self):
         self.tray = QSystemTrayIcon(self)
-
+        
         # 设置图标（注意：图标文件需要存在）
         try:
             self.tray.setIcon(QIcon(resource_path("assets/icon.ico")))
@@ -282,7 +282,7 @@ class MainWindow(QMainWindow):
         if reason == QSystemTrayIcon.DoubleClick:
             self.showNormal()
 
-    #  菜单-退出程序
+    # 菜单-退出程序
     def close_app(self):
         msg = QMessageBox()
         msg.setWindowTitle("提示")
@@ -421,7 +421,7 @@ class MainWindow(QMainWindow):
         except Exception as e:
             self.ui.plainTextEdit_response.setPlainText(f"请求异常:{type(e).__name__}")
 
-    # 新增的清理槽函数
+    # 清理槽函数
     def cleanup_send_thread(self):
         """清理工作线程和QThread对象"""
         if self.Send_thread.isRunning():
@@ -504,26 +504,19 @@ if __name__ == "__main__":
     light_palette.setColor(QPalette.HighlightedText, QColor("#ffffff"))  # 高亮文字
 
     app.setPalette(light_palette)
-
     app.setQuitOnLastWindowClosed(True)  # 默认就是True，显式设置更明确
-
     app.setWindowIcon(QIcon(resource_path("assets/icon.ico")))  # 设置应用程序图标
-
-    # 设置完整的应用程序元信息
-    app.setApplicationName("QQ 1623498574")
-    app.setApplicationDisplayName("QQ 1623498574")
-    app.setOrganizationName("QQ 1623498574")
-
-    # Windows特定的应用程序ID设置
+    app.setApplicationName("QQ 2424226501")
+    app.setApplicationDisplayName("QQ 2424226501")
+    app.setOrganizationName("QQ 2424226501")
     if sys.platform == 'win32':
         try:
             from ctypes import windll
-
             windll.shell32.SetCurrentProcessExplicitAppUserModelID(f'API调试工具 - 作者: 苍 版本 {version_app}')
         except ImportError:
             pass
 
     window = MainWindow(version_app)
     window.show()
-
     sys.exit(app.exec())
+
