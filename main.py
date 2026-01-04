@@ -50,7 +50,7 @@ class SearchDialog(QMainWindow):
             # 第二次查找
             found = self.text_edit.find(query, flags)
             if not found:
-                # 彻底找不到 → 只有这里才提示
+                # 彻底找不到
                 self.status_bar.showMessage(f'查找: 无法找到文本 "{query}"')
 
     def count_matches(self, case_sensitive=False):
@@ -144,13 +144,10 @@ class MainWindow(QMainWindow):
         # 显式指定允许的按钮
         self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowCloseButtonHint)
 
-        # 连接按钮信号与槽
         self.ui.pushButton_clear.clicked.connect(self.on_clear)
         self.ui.pushButton_paste_wrap.clicked.connect(self.on_paste_wrap)
         self.ui.pushButton_Send_request.clicked.connect(self.on_Send_request)
         self.ui.pushButton_generate_code.clicked.connect(self.on_generate_code)
-
-        # 连接组合框信号与槽
         self.ui.comboBox_request_type.currentTextChanged.connect(self.on_text_changed)
         self.ui.comboBox_request_library.currentTextChanged.connect(self.on_use_import)
         self.ui.comboBox_submit_type.currentTextChanged.connect(self.on_submit_type)
@@ -160,12 +157,9 @@ class MainWindow(QMainWindow):
         self.status_bar = QStatusBar()
         self.setStatusBar(self.status_bar)
 
-        # 最左边的永久部件
         app_name_label = QLabel("API调试工具 ")
         app_name_label.setStyleSheet("font-weight: bold; color: #2c3e50;")
         self.status_bar.insertPermanentWidget(0, app_name_label)
-
-        # 右侧的永久部件（标准方式）
         self.time_label = QLabel()
         self.status_bar.addPermanentWidget(self.time_label)
 
@@ -311,7 +305,6 @@ class MainWindow(QMainWindow):
         self.settings.setValue("select/redirection", self.ui.checkBox_Static_redirection.isChecked())
         self.settings.setValue("select/record", self.ui.checkBox_record.isChecked())
         self.settings.setValue("select/decode", self.ui.checkBox_decode.isChecked())
-
         self.settings.setValue("select/browser", self.ui.comboBox_browser.currentIndex())
         self.settings.setValue("select/library", self.ui.comboBox_request_library.currentIndex())
         self.settings.setValue("select/submit", self.ui.comboBox_submit_type.currentIndex())
@@ -328,25 +321,19 @@ class MainWindow(QMainWindow):
         self.ui.plainTextEdit_Request_Cookie.setPlainText("")
         self.ui.plainTextEdit_Request_Head.setPlainText("")
         self.ui.plainTextEdit_response.setPlainText("")
-        print("清空所有")
         self.status_bar.showMessage("清空所有")
 
     #  粘贴协议包
     def on_paste_wrap(self):
         """粘贴协议包 事件"""
-        # 获取剪贴板内容
         clipboard_content = pyperclip.paste()
-        # print("剪贴板内容:")
-        # print(clipboard_content)
         self.parsed = parse_http_request(clipboard_content)
-
         if self.parsed["method"]:
             self.ui.plainTextEdit_Request_URL.setPlainText(self.parsed['url'])
             if self.parsed['method'].upper() == 'GET':
                 Type = 0
             if self.parsed['method'].upper() == 'POST':
                 Type = 1
-
             self.ui.comboBox_request_type.setCurrentIndex(Type) # 通过文本设置
             self.ui.plainTextEdit_Request_Head.setPlainText(self.parsed['headers'])
             self.ui.plainTextEdit_Request_Cookie.setPlainText(self.parsed['cookies'])
@@ -356,16 +343,13 @@ class MainWindow(QMainWindow):
         else:
             self.show_toast(f"解析请求包失败, 要不你手动粘贴一下...", "warning")
             self.status_bar.showMessage(f"提示:       解析请求包失败, 要不你手动粘贴一下")
-
     def on_use_import(self, text):
         if self.ui.comboBox_request_library.currentIndex() == 1:
             self.ui.comboBox_browser.setEnabled(True)
         else:
             self.ui.comboBox_browser.setEnabled(False)
-
     def on_text_changed(self, text):
         print(f"选中了文本: {text}")
-
     def on_submit_type(self, text):
         print(f"选中了文本: {text}")
     def on_respond_type(self, text):
@@ -376,7 +360,6 @@ class MainWindow(QMainWindow):
         self.Head = get_head(self.ui.plainTextEdit_Request_Head.toPlainText())
         self.Cookie = get_cookie(self.ui.plainTextEdit_Request_Cookie.toPlainText())
         self.Data = self.ui.plainTextEdit_Request_Data.toPlainText()
-
         self.request_type = self.ui.comboBox_request_type.currentText()  # 请求的模型
         self.request_library = self.ui.comboBox_request_library.currentText()  # 请求的库
         self.submit_type = self.ui.comboBox_submit_type.currentIndex()  # 请求的数据类型
@@ -385,7 +368,6 @@ class MainWindow(QMainWindow):
         self.allow_redirects = self.ui.checkBox_Static_redirection.isChecked()  # 是否重定向
         if self.submit_type == 1:
             self.Data = decodeDataStr(self.Data)
-
         if not self.URL:
             # 显示临时消息
             self.status_bar.showMessage(f"提示:       请输入URL")
@@ -404,15 +386,12 @@ class MainWindow(QMainWindow):
                 print("请等待当前线程完成")
                 return
             self.Send_Worker = Send_QtWorker(self.request_library, self.request_type, self.respond_type, self.URL, self.Data, self.Head, self.Cookie, self.proxies, self.request_finger, not self.allow_redirects)
-            # 为每个信号连接到对应的文本编辑器
             self.Send_Worker.plainTextEdit_response.connect(self.ui.plainTextEdit_response.setPlainText)
             self.Send_Worker.plainTextEdit_response_header.connect(self.ui.plainTextEdit_response_header.setPlainText)
             self.Send_Worker.plainTextEdit_response_cookie.connect(self.ui.plainTextEdit_response_cookie.setPlainText)
             self.Send_Worker.status_bar.connect(self.status_bar.showMessage)
             self.Send_Worker.show_toast.connect(self.show_toast)
-            # 连接worker的finished信号到清理函数
             self.Send_Worker.finished.connect(self.cleanup_send_thread)
-            # 创建QThread线程对象
             self.Send_thread = QThread()
             self.Send_Worker.moveToThread(self.Send_thread)
             self.Send_thread.started.connect(self.Send_Worker.run)
@@ -443,7 +422,6 @@ class MainWindow(QMainWindow):
         URL = self.ui.plainTextEdit_Request_URL.toPlainText()
         Head = get_head(self.ui.plainTextEdit_Request_Head.toPlainText())
         Cookie = get_cookie(self.ui.plainTextEdit_Request_Cookie.toPlainText())
-
         submit_type = self.ui.comboBox_submit_type.currentIndex()
         Data = self.ui.plainTextEdit_Request_Data.toPlainText()  # 请求的数据
         if submit_type == 1:
@@ -451,14 +429,12 @@ class MainWindow(QMainWindow):
         request_type = self.ui.comboBox_request_type.currentText()  # 当前选中项的文本
         request_library = self.ui.comboBox_request_library.currentText()  # 当前选中项的文本
         allow_redirects = self.ui.checkBox_Static_redirection.isChecked()  # 是否重定向
-
         agent_IP = self.ui.lineEdit_agent_IP.text()
         if not URL:
             # 显示临时消息
             self.status_bar.showMessage(f"提示:       请输入URL")
             self.show_toast(f"请输入URL!", "warning")
             return
-
         if agent_IP:
             IP_ = f"http://{agent_IP}"
             proxies = {"http": IP_, "https": IP_}
@@ -471,7 +447,6 @@ class MainWindow(QMainWindow):
         else:
             code_ = ""
             self.show_toast(f"暂时无法使用 {request_library} 库", "warning")
-
         pyperclip.copy(code_)  # 写入内容到剪切板
         self.show_toast(f"已复制代码,快去粘贴使用吧!", "success")
         self.status_bar.showMessage(f"提示:       已复制代码,快去粘贴使用吧!")
@@ -489,19 +464,18 @@ if __name__ == "__main__":
                          "chrome119", "chrome120", "edge99", "edge101"]  # 模拟指纹
     version_app = "1.3.0"
     app = QApplication(sys.argv)
-    # 使用 Fusion 风格，便于自定义 palette
     app.setStyle("Fusion")
     # 创建浅色 palette
     light_palette = QPalette()
-    light_palette.setColor(QPalette.Window, QColor("#ffffff"))  # 窗口背景
-    light_palette.setColor(QPalette.WindowText, QColor("#333333"))  # 窗口文字
-    light_palette.setColor(QPalette.Base, QColor("#ffffff"))  # 输入框背景
-    light_palette.setColor(QPalette.AlternateBase, QColor("#f0f0f0"))  # 备用背景
-    light_palette.setColor(QPalette.Text, QColor("#333333"))  # 输入文字
-    light_palette.setColor(QPalette.Button, QColor("#4a90e2"))  # 按钮背景
-    light_palette.setColor(QPalette.ButtonText, QColor("#ffffff"))  # 按钮文字
-    light_palette.setColor(QPalette.Highlight, QColor("#4a90e2"))  # 选中高亮
-    light_palette.setColor(QPalette.HighlightedText, QColor("#ffffff"))  # 高亮文字
+    light_palette.setColor(QPalette.Window, QColor("#ffffff"))
+    light_palette.setColor(QPalette.WindowText, QColor("#333333"))
+    light_palette.setColor(QPalette.Base, QColor("#ffffff"))
+    light_palette.setColor(QPalette.AlternateBase, QColor("#f0f0f0"))
+    light_palette.setColor(QPalette.Text, QColor("#333333"))
+    light_palette.setColor(QPalette.Button, QColor("#4a90e2"))
+    light_palette.setColor(QPalette.ButtonText, QColor("#ffffff"))
+    light_palette.setColor(QPalette.Highlight, QColor("#4a90e2"))
+    light_palette.setColor(QPalette.HighlightedText, QColor("#ffffff"))
 
     app.setPalette(light_palette)
     app.setQuitOnLastWindowClosed(True)  # 默认就是True，显式设置更明确
@@ -519,6 +493,7 @@ if __name__ == "__main__":
     window = MainWindow(version_app)
     window.show()
     sys.exit(app.exec())
+
 
 
 
