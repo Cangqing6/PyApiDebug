@@ -8,7 +8,7 @@ from PySide6.QtGui import QIcon, QAction, QPalette, QColor, QShortcut, QTextCurs
 from PySide6.QtWidgets import (QApplication, QMainWindow, QStatusBar, QLabel, QMessageBox, QSystemTrayIcon, QMenu)
 from Send_selector import Send_QtWorker
 from win_ui import Ui_MainWindow
-from Analyzing_HTTP import parse_http_request, get_head, get_cookie, decodeDataStr, get_head_x, get_cookie_x
+from HttpAnalyzer import parse_http_request, get_head, get_cookie, decodeDataStr, get_head_x, get_cookie_x
 from Toast_ import Toast
 from Network_Request_Example import get_Example_curl_cffi, get_Example_requests
 from SearchDialog import Ui_Dialog
@@ -519,4 +519,5 @@ if __name__ == "__main__":
     window = MainWindow(version_app)
     window.show()
     sys.exit(app.exec())
+
 
