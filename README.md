@@ -7,7 +7,7 @@ Python request tool
   #### 1.粘贴请求包
   支持从剪贴板直接粘贴原始 HTTP 请求包。
   
-  自动解析出请求 URL、请求方法、Headers、Cookies 和 Body 数据。
+  自动解析出请求 URL、请求方法、Headers、Cookies 和 Data 数据。
   
   成功解析时会提示“解析请求包成功”，失败则提示手动输入。
 
