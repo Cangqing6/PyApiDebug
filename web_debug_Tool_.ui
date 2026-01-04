@@ -81,19 +81,17 @@
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
-    background-color: #b0b0b0;  /* 中性灰色 */
-    color: white;              /* 白色文字 */
-    border: none;             /* 无边框 */
-    padding: 8px 16px;        /* 内边距 */
-    border-radius: 4px;       /* 圆角 */
+    background-color: #b0b0b0;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
 }
 
-/* 鼠标悬停时变深灰色 */
 QPushButton:hover {
     background-color: #909090;
 }
 
-/* 按钮按下时变更深的灰色 */
 QPushButton:pressed {
     background-color: #707070;
 }</string>
@@ -119,19 +117,17 @@ QPushButton:pressed {
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
-    background-color: #b0b0b0;  /* 中性灰色 */
-    color: white;              /* 白色文字 */
-    border: none;             /* 无边框 */
-    padding: 8px 16px;        /* 内边距 */
-    border-radius: 4px;       /* 圆角 */
+    background-color: #b0b0b0;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
 }
 
-/* 鼠标悬停时变深灰色 */
 QPushButton:hover {
     background-color: #909090;
 }
 
-/* 按钮按下时变更深的灰色 */
 QPushButton:pressed {
     background-color: #707070;
 }</string>
@@ -157,19 +153,17 @@ QPushButton:pressed {
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
-    background-color: #b0b0b0;  /* 中性灰色 */
-    color: white;              /* 白色文字 */
-    border: none;             /* 无边框 */
-    padding: 8px 16px;        /* 内边距 */
-    border-radius: 4px;       /* 圆角 */
+    background-color: #b0b0b0;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
 }
 
-/* 鼠标悬停时变深灰色 */
 QPushButton:hover {
     background-color: #909090;
 }
 
-/* 按钮按下时变更深的灰色 */
 QPushButton:pressed {
     background-color: #707070;
 }</string>
@@ -367,19 +361,17 @@ QPushButton:pressed {
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
-    background-color: #b0b0b0;  /* 中性灰色 */
-    color: white;              /* 白色文字 */
-    border: none;             /* 无边框 */
-    padding: 8px 16px;        /* 内边距 */
-    border-radius: 4px;       /* 圆角 */
+    background-color: #b0b0b0;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
 }
 
-/* 鼠标悬停时变深灰色 */
 QPushButton:hover {
     background-color: #909090;
 }
 
-/* 按钮按下时变更深的灰色 */
 QPushButton:pressed {
     background-color: #707070;
 }</string>
@@ -618,8 +610,7 @@ QPushButton:pressed {
        </property>
        <property name="styleSheet">
         <string notr="true">
-            
-            /* 标签栏样式 */
+
             QTabBar::tab {
  			  background: #b0b0b0;
                 color: white;
@@ -630,13 +621,11 @@ QPushButton:pressed {
                 margin-right: 2px;
             }
             
-            /* 选中标签样式 */
             QTabBar::tab:selected {
                 background: #707070;
                 color: white;
             }
             
-            /* 悬停标签样式 */
             QTabBar::tab:hover {
                 background: #909090;
             }
@@ -765,3 +754,4 @@ QPushButton:pressed {
  <resources/>
  <connections/>
 </ui>
+
