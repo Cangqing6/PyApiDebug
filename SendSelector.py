@@ -3,7 +3,7 @@ from PySide6.QtCore import QObject, Signal
 from datetime import datetime
 
 from curl_cffi_library import cffi_send
-from curl_requests_library import requests_send
+from CurlRequestsLibrary import requests_send
 from HttpAnalyzer import get_head_x, get_cookie_x
 
 
@@ -74,5 +74,6 @@ def select_send(library, model, url, data, header, cookie, proxies, element, all
     else:
         response = None
     return response
+
 
 
