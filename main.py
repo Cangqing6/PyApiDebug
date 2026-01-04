@@ -6,7 +6,7 @@ from PySide6 import QtCore
 from PySide6.QtCore import QTime, QTimer, QThread, QSettings
 from PySide6.QtGui import QIcon, QAction, QPalette, QColor, QShortcut, QTextCursor, QKeySequence, QTextDocument
 from PySide6.QtWidgets import (QApplication, QMainWindow, QStatusBar, QLabel, QMessageBox, QSystemTrayIcon, QMenu)
-from Send_selector import Send_QtWorker
+from SendSelector import Send_QtWorker
 from win_ui import Ui_MainWindow
 from HttpAnalyzer import parse_http_request, get_head, get_cookie, decodeDataStr, get_head_x, get_cookie_x
 from Toast_ import Toast
@@ -519,5 +519,6 @@ if __name__ == "__main__":
     window = MainWindow(version_app)
     window.show()
     sys.exit(app.exec())
+
 
 
