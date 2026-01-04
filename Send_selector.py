@@ -4,7 +4,7 @@ from datetime import datetime
 
 from curl_cffi_library import cffi_send
 from curl_requests_library import requests_send
-from Analyzing_HTTP import get_head_x, get_cookie_x
+from HttpAnalyzer import get_head_x, get_cookie_x
 
 
 class Send_QtWorker(QObject):
@@ -74,4 +74,5 @@ def select_send(library, model, url, data, header, cookie, proxies, element, all
     else:
         response = None
     return response
+
 
